@@ -1,0 +1,46 @@
+<nav style="background-color: rgb(234, 234, 234);">
+    <p>Aqui é a navbar que será feita</p>
+    <p>Usuário : {{ current_user }}</p>
+
+    <ul>
+        <li>
+            <a href="{{url_for('main.home')}}">
+                Home
+            </a>
+        </li>
+        {% if current_user.is_authenticated %}
+            <li>
+                <a href="">
+                    Account
+                </a>
+            </li>
+            <li>
+                <a href="{{url_for('band.my_bands')}}">
+                    Minhas Bandas
+                </a>
+            </li>
+            <li>
+                <a href="{{url_for('auth.logout')}}">
+                    Logout
+                </a>
+            </li>
+        {% else %}
+            <li>
+                <a href="{{url_for('auth.login')}}">
+                    Login
+                </a>
+            </li>
+            <li>
+                <a href="{{url_for('auth.register')}}">
+                    Register
+                </a>
+            </li>
+        {%  endif %}
+            <li>
+                <a href="{{url_for('main.about')}}">
+                    About
+                </a>
+            </li>
+
+        </ul>
+</nav>

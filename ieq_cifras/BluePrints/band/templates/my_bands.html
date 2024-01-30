@@ -1,0 +1,31 @@
+{% extends 'base.html'%}
+
+{% block content %}
+
+<div>
+    <h1>Aqui é a página de my bands</h1>
+</div>
+
+<div>
+    <ul>
+        {% for band in list_bands %}
+            <li>
+                <a href="">
+                    {{ band.name }}
+                </a>
+            </li>
+        {%endfor %}
+    </ul>
+</div>
+
+<div>
+    
+    <a href="{{url_for('band.create_band')}}"">
+        <button>
+            Criar banda
+        </button>
+    </a>
+    
+</div>
+
+{% endblock content %}

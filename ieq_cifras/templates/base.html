@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>
+        {% if title %}
+        {{ title }}
+        {% else %}
+        IEQ CIFRAS
+        {% endif %}
+    </title>
+
+    {% block header_tags %}
+        {# This block is usefull if we want to add any tag in header in any especif page #}
+    {% endblock header_tags %}
+    
+</head>
+<body>
+  <div class=""message>
+      {% with messages = get_flashed_messages(with_categories=true) %}
+      {% if messages %}
+        {% for category, message in messages%}
+          <div class="alert alert-{{ category }}">
+            Message : {{ message }}
+          </div>
+        {% endfor %}
+      {% endif %}
+    {% endwith %}
+  </div>
+
+  <div class="navbar">
+    {% include 'navbar.html' %}
+  </div>
+
+  <div class="content">
+    {% block content %}
+    {% endblock content %}
+  </div>
+  </body>
+</html>

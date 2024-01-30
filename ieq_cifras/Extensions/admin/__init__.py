@@ -2,7 +2,7 @@ from flask_admin import Admin
 from flask_admin.contrib.sqla import ModelView
 
 from ieq_cifras.Extensions.database import database
-from ieq_cifras.models import User, Band, RegAuditCifra, ComposicaoBand, Cifra
+from ieq_cifras.models import User, Band, RegAuditCifra, BandMember, Cifra
 
 from sqlalchemy import inspect
 
@@ -17,6 +17,7 @@ class UserModelView(ModelView):
     column_searchable_list = ['username', 'email']
     column_editable_list = ['username']
 
+    column_list = [c_attr.key for c_attr in inspect(User).mapper.column_attrs]
     column_list = [c_attr.key for c_attr in inspect(User).mapper.column_attrs]
     column_exclude_list = ['password', ]
 
@@ -42,13 +43,15 @@ class CifraModelView(ModelView):
 
     column_list = [c_attr.key for c_attr in inspect(Cifra).mapper.column_attrs]
 
-class ComposicaoBandModelView(ModelView):
+class BandMemberModelView(ModelView):
     can_create = True
     can_edit = True
     can_delete = True
     can_view_details = True
-    column_searchable_list = ['id_band', 'id_user']
-    column_editable_list = ['id_band', 'id_user']
+    column_hide_backrefs = False
+    column_display_pk = True
+    column_list = [c_attr.key for c_attr in inspect(BandMember).mapper.column_attrs]
+
 
 class RegAuditCifraModelView(ModelView):
     can_create = True
@@ -62,5 +65,5 @@ def init_app(app):
     admin.add_view(UserModelView(User, database.session, name='Users', endpoint='user_admin'))
     admin.add_view(CifraModelView(Cifra, database.session, name='Cifras', endpoint='cifra_admin'))
     admin.add_view(BandModelView(Band, database.session, name='Bands', endpoint='band_admin'))
-    admin.add_view(ComposicaoBandModelView(ComposicaoBand, database.session, name='Composição Bands', endpoint='composicao_admin'))
+    admin.add_view(BandMemberModelView(BandMember, database.session, name='Composição Bands', endpoint='banda_member'))
     admin.add_view(RegAuditCifraModelView(RegAuditCifra, database.session, name='Registro Cifras', endpoint='regCifra_admin'))

@@ -10,6 +10,10 @@ class Band(database.Model):
 
     cifras = database.relationship('Cifra', backref='cifras', lazy=True)
 
+    @property
+    def users(self):
+        BandMember.query.filter_by(id_band = self.id, is_del=False).all()
+
 class User(database.Model, UserMixin):
     id = database.Column(database.Integer, primary_key=True)
     username = database.Column(database.String(50), nullable=False)
@@ -22,7 +26,7 @@ class User(database.Model, UserMixin):
     
     @property
     def bands(self):
-        ComposicaoBand.query.filter_by(id_user = self.id, is_del=False).all()
+        BandMember.query.filter_by(id_user = self.id, is_del=False).all()
 
 class Cifra(database.Model):
     id = database.Column(database.Integer, primary_key=True)
@@ -35,15 +39,12 @@ class Cifra(database.Model):
     estruct = database.Column(database.Text, nullable=False)
     is_del = database.Column(database.Boolean, nullable=False, default=False)
 
-class ComposicaoBand(database.Model):
+class BandMember(database.Model):
     id = database.Column(database.Integer, primary_key=True)
     id_band = database.Column(database.Integer, database.ForeignKey('band.id'), nullable=False)
     id_user = database.Column(database.Integer, database.ForeignKey('user.id'), nullable=False)
     is_del = database.Column(database.Boolean, nullable=False, default=False)
 
-    @property
-    def users(self):
-        ComposicaoBand.query.filter_by(id_band = self.id, is_del=False).all()
 
 class RegAuditCifra(database.Model):
     id = database.Column(database.Integer, primary_key=True)

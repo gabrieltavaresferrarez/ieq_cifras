@@ -1,0 +1,15 @@
+name: env_IeqCifras
+channels:
+  - conda-forge
+dependencies:
+  - python=3.12
+  - flask
+  - flask-admin
+  - flask-login
+  - flask-wtf
+  - flask-sqlalchemy
+  - dynaconf
+  - email-validator
+  - ipython
+  - ipykernel
+  - werkzeug

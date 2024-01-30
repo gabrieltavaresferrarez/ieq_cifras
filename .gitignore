@@ -1,0 +1,10 @@
+
+# Ignore dynaconf secret files
+.secrets.*
+
+# python caches
+__pycache__/
+*/__pycache__/
+
+# local db
+instance/

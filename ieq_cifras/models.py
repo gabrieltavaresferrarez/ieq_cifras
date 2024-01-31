@@ -12,7 +12,9 @@ class Band(database.Model):
 
     @property
     def users(self):
-        BandMember.query.filter_by(id_band = self.id, is_del=False).all()
+        list_bandMembers =  BandMember.query.filter_by(id_user = self.id, is_del=False).all()
+        list_userIds = [bandMember.id_user for bandMember in list_bandMembers]
+        return database.session.query(User).filter(User.id.in_(list_userIds)).all()
 
 class User(database.Model, UserMixin):
     id = database.Column(database.Integer, primary_key=True)
@@ -26,7 +28,10 @@ class User(database.Model, UserMixin):
     
     @property
     def bands(self):
-        BandMember.query.filter_by(id_user = self.id, is_del=False).all()
+        list_bandMembers =  BandMember.query.filter_by(id_user = self.id, is_del=False).all()
+        list_bandIds = [bandMember.id_band for bandMember in list_bandMembers]
+        return database.session.query(Band).filter(Band.id.in_(list_bandIds))
+
 
 class Cifra(database.Model):
     id = database.Column(database.Integer, primary_key=True)

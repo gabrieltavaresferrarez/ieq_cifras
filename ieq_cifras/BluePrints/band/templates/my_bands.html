@@ -7,10 +7,13 @@
 </div>
 
 <div>
+    <h2>
+        Minhas bandas
+    </h2>
     <ul>
         {% for band in list_bands %}
             <li>
-                <a href="">
+                <a href="{{url_for('band.home', id_band=band.id)}}">
                     {{ band.name }}
                 </a>
             </li>

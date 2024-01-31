@@ -1,0 +1,57 @@
+{% extends 'base.html'%}
+
+{% block content %}
+
+<div>
+    <h1>Aqui é a página home de uma banda</h1>
+</div>
+
+<div>
+    <a>
+        <button>
+            Nova Cifra
+        </button>
+    </a>
+    <a>
+        <button>
+            Nossas Cifras
+        </button>
+    </a>
+    {% if current_user.id == band.id_manager %}
+        <a>
+            <button>
+                Editar banda
+            </button>
+        </a>
+        <a>
+            <button>
+                Link convite
+            </button>
+        </a>
+    {% endif %}
+</div>
+
+<div>
+    <h2>
+        Membros
+    </h2>
+    <ul>
+        {% for user in band.users %}
+            <li>
+                {{ user.username }}
+            </li>
+        {% endfor %}
+    </ul>
+</div>
+
+{% if current_user.id != band.id_manager %}
+    <div>
+        <a>
+            <button>
+                Sair
+            </button>
+        </a>
+    </div>    
+{% endif %}
+
+{% endblock content %}

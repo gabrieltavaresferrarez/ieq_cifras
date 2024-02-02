@@ -1,0 +1,31 @@
+{% extends 'base.html'%}
+
+{% block content %}
+
+<div>
+    <h1>Aqui é a página de invite</h1>
+</div>
+
+<div>
+    <h2>
+        Link convite
+    </h2>
+    <input type="text" value="{{url_for('band.enter', id_band=band.id, access_key=band.access_key, _external=True)}}" id="myInput" readonly>
+    <button onclick="myFunction()">Copy text</button>
+
+    <button>
+        Generate new link
+    </button>
+
+</div>
+
+<script>
+function myFunction() {
+  var copyText = document.getElementById("myInput");
+  copyText.select();
+  document.execCommand("Copy");
+  alert("Copied to clipboard");
+}    
+</script>
+
+{% endblock content %}

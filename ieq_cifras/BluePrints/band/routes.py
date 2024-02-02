@@ -27,6 +27,7 @@ def my_bands():
     list_bandMembers = BandMember.query.filter_by(id_user = current_user.id, is_del=False).all()
     list_bandIDs = [bandMember.id for bandMember in list_bandMembers]
     list_bands = database.session.query(Band).filter(Band.id.in_(list_bandIDs)).all()
+    list_bands = current_user.bands
     return render_template('my_bands.html', list_bands= list_bands)
 
 @bp_band.route('/new', methods=['GET', 'POST'])
@@ -47,3 +48,29 @@ def new():
         else:
             return render_template('new.html', title='New Band', form=form_newBand)
 
+@bp_band.route('/<id_band>/invite')
+@login_required
+def invite(id_band):
+    band = Band.query.get(id_band)
+    if current_user.id != band.id_manager:
+        return abort(401)
+    
+    
+    return render_template('invite.html', band=band)
+
+@bp_band.route('/<id_band>/enter/<access_key>', methods=[ 'GET', 'POST'])
+@login_required
+def enter(id_band, access_key):
+    band = Band.query.get(id_band)
+    if band.access_key != access_key: # verify if key is correct
+        return 'chave inválida'
+    elif current_user in band.users: # verify if user is already in band
+        return 'você ja está nessa banda'
+    
+    if request.method == 'GET':
+        return render_template('enter.html', band=band)
+    elif request.method == 'POST':
+        bandMember = BandMember(id_user = current_user.id, id_band = band.id)
+        database.session.add(bandMember)
+        database.session.commit()
+        return redirect(url_for('band.home', id_band = id_band))
